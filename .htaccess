@@ -1,69 +1,28 @@
 <IfModule mod_rewrite.c>
-  RewriteEngine On
+    RewriteEngine On
 
-  # Bloquear listagem de diretórios
-  Options -Indexes
+    # Redireciona todas as requisições para public/index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php [L]
 
-  # Bloquear arquivos sensíveis
-  RewriteRule ^.*\.(ini|log|sh|bak|old|sql|yml|yaml|conf|env)$ - [F,NC]
+    # Bloquear listagem de diretórios
+    Options -Indexes
 
-  # Bloquear arquivos ocultos (.git, .env, etc.)
-  RewriteRule (^|/)\..+ - [F]
+    # Bloquear arquivos sensíveis
+    RewriteRule ^.*\.(ini|log|sh|bak|old|sql|yml|yaml|conf|env)$ - [F,NC]
 
-  # Bloquear acesso direto a .php pela URL
-  RewriteCond %{THE_REQUEST} \.php [NC]
-  RewriteRule ^ - [F]
+    # Bloquear arquivos ocultos (.git, .env, etc.)
+    RewriteRule (^|/)\..+ - [F]
 
-  # Roteamento amigável para /Api/*
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  
-  # RewriteRule ^Api/(.*)$ Api/index.php [QSA,L]
-  RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
-
-
 # Bloqueia acesso direto a todos os arquivos PHP, exceto index.php
+
 <FilesMatch "\.php$">
-    Order Deny,Allow
-    Deny from all
+Require all denied
 </FilesMatch>
 
 <Files "index.php">
-    Order Allow,Deny
-    Allow from all
+Require all granted
 </Files>
-
-
-
-# <IfModule mod_headers.c>
-
-#   # Impede que o site seja carregado dentro de iframes (clickjacking)
-#   Header always set X-Frame-Options "DENY"
-
-#   # Bloqueia detecção de tipo MIME incorreto
-#   Header set X-Content-Type-Options "nosniff"
-
-#   # Protege contra XSS em navegadores que suportam essa opção
-#   Header set X-XSS-Protection "1; mode=block"
-
-#   # Remove o cabeçalho que informa qual servidor está rodando
-#   Header unset Server
-#   Header unset X-Powered-By
-
-#   # Impede o navegador de armazenar cache de conteúdo sensível
-#   Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-#   Header set Pragma "no-cache"
-
-#   # Content Security Policy (CSP) básica
-#   Header set Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self'; object-src 'none'; frame-ancestors 'none';"
-
-#   # Referrer Policy (limita envio de cabeçalhos Referer)
-#   Header set Referrer-Policy "strict-origin-when-cross-origin"
-
-#   # Controle de permissão para APIs do navegador
-#   Header set Permissions-Policy "geolocation=(), microphone=(), camera=(), fullscreen=*"
-
-# </IfModule>
-

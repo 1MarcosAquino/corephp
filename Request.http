@@ -1,0 +1,31 @@
+@URL_BASE = http://localhost:3000
+
+POST {{URL_BASE}}/api/user/sing-up
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name1": "user",
+  "email": "user@mail.com",
+  "password": "12345678"
+}
+
+###
+
+POST {{URL_BASE}}/api/user/sing-in
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email":"user@mail.com",
+    "password": "12345678"
+}
+
+###
+
+GET {{URL_BASE}}/api/user
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3Q6MzAwMCIsImlhdCI6MTc3NDkzMTI3MiwiZXhwIjoxNzc1MDU0NzI4LCJ1c2VyX2lkIjoxMX0.tRy-VRNQO4D0VkHKn_yNKccOtFb4z3lKcB-d2YvQLyE
+
+
+###
